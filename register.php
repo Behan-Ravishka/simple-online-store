@@ -27,34 +27,43 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-        // Use prepared statements
-        $stmt = $conn->prepare("INSERT INTO users (username, password, email, role) VALUES (?, ?, ?, ?)");
+        // Check for duplicate username or email
+        $check_stmt = $conn->prepare("SELECT username, email FROM users WHERE username = ? OR email = ?");
+        $check_stmt->bind_param("ss", $username, $email);
+        $check_stmt->execute();
+        $check_stmt->store_result();
 
-        // Set role based on admin verification
-        $role = isset($_GET['admin']) ? 'admin' : 'user';
+        if ($check_stmt->num_rows > 0) {
+            $check_stmt->bind_result($existing_username, $existing_email);
+            $check_stmt->fetch();
 
-        $stmt->bind_param("ssss", $username, $hashed_password, $email, $role);
-
-        if ($stmt->execute()) {
-            $success_message = "Registration successful!";
-            header("Location: login.php");
-            exit;
-        } else {
-            // Error handling
-            if ($stmt->errno === 1062) {
-                if (strpos($stmt->error, 'username') !== false) {
-                    $error_message = "Username already exists. Please choose a different username.";
-                } elseif (strpos($stmt->error, 'email') !== false) {
-                    $error_message = "Email address already exists. Please use a different email.";
-                } else {
-                    $error_message = "Duplicate entry error.";
-                }
-            } else {
-                $error_message = "Error: " . $stmt->error;
+            if ($existing_username === $username) {
+                $error_message = "Username already exists. Please choose a different username.";
+            } elseif ($existing_email === $email) {
+                $error_message = "Email address already exists. Please use a different email.";
             }
-        }
+        } else {
+            // Use prepared statements
+            $stmt = $conn->prepare("INSERT INTO users (username, password, email, role) VALUES (?, ?, ?, ?)");
 
-        $stmt->close(); // Close the statement
+            // Set role based on admin verification
+            $role = isset($_GET['admin']) ? 'admin' : 'user';
+
+            $stmt->bind_param("ssss", $username, $hashed_password, $email, $role);
+
+            if ($stmt->execute()) {
+                $success_message = "Registration successful!";
+                header("Location: login.php");
+                exit;
+            } else {
+                $error_message = "An unexpected error occurred. Please try again later."; // Generic error
+                // For debugging:
+                // $error_message = "Error: " . $stmt->error;
+            }
+
+            $stmt->close(); // Close the statement
+        }
+        $check_stmt->close();
     }
 }
 ?>

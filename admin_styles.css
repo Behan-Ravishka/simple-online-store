@@ -1,0 +1,103 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+nav.navbar {
+    background-color: #333;
+}
+
+nav.navbar .nav-links a:hover {
+    background-color: #555;
+}
+
+.admin-container {
+    width: 95%; /* Adjust width for smaller screens */
+    max-width: 1200px;
+    margin: 20px auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.admin-form-container {
+    margin-bottom: 20px;
+}
+
+.admin-form-container input[type="text"],
+.admin-form-container textarea,
+.admin-form-container input[type="number"] {
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box; /* Include padding and border in element's total width and height */
+}
+
+.admin-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.admin-btn:hover {
+    background-color: #0056b3;
+}
+
+.admin-tables {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap; /* Allow tables to wrap onto new lines */
+}
+
+.admin-table {
+    width: 100%; /* Default width for small screens */
+    margin-bottom: 20px;
+}
+
+@media (min-width: 768px) {
+    .admin-table {
+        width: 48%; /* Adjust width for larger screens */
+    }
+}
+
+.admin-table table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.admin-table th,
+.admin-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    box-sizing: border-box;
+}
+
+.admin-table th {
+    background-color: #f2f2f2;
+}
+
+.success {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
