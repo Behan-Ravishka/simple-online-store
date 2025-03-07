@@ -6,7 +6,7 @@ if (!isset($_SESSION["user_id"]) || $_SESSION["role"] != "admin") {
 }
 include 'functions.php';
 
-$message = ""; //for messages to the user
+$message = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST["add_product"])) {
@@ -29,9 +29,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html>
 <head>
     <title>Admin Panel</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="main_page_styles.css">
 </head>
 <body>
+    <header>
+        <?php include 'navbar.php'; ?>
+    </header>
     <div class="container">
         <h2>Admin Panel</h2>
         <?php echo $message; ?>
@@ -108,6 +111,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </tbody>
         </table>
 
+        <a href='admin_register.php'>Register Admin</a>
     </div>
 </body>
 </html>
